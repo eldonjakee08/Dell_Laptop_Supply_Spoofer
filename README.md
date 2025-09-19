@@ -144,4 +144,6 @@ If you notice, the DS2431 does not have any power rails, this is because the IC 
 
 **TESTING**
 
+Heres a youtube video with me testing the Supply Spoofer. 
+
 [![Youtube](https://img.youtube.com/vi/CXdM-Me_jxc/maxresdefault.jpg)](https://www.youtube.com/watch?v=CXdM-Me_jxc)
