@@ -107,7 +107,7 @@ Repo Link: https://github.com/eldonjakee08/DS2431_1WIRE_EEPROM_DRIVER
 
 <img width="571" height="316" alt="image" src="https://github.com/user-attachments/assets/a17aa85a-c4ab-4d42-9d8f-86aa5feede38" />
 
-I made a short STM32 program to write into the EEPROM. Let me explain how it works. 
+I made a simple STM32 program to write into the EEPROM. Let me explain how it works. 
 1. declare and intialize uint8_t pdata[] array, this will hold the first 8 bytes of data to be written into EEPROM memory location 0x0000 to 0x0007
 2. call OneWire_WriteMemory() function (from the driver) to write the contents of pdata array into DS2431s EEPROM
 3. declare and intialize another uint8_t pdata2[] array, this will hold the 2nd batch of 8 byte data to be written into memory location 0x0008 to 0x000F
