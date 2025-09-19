@@ -20,6 +20,15 @@ So by using a 65W USB PD capable power bank + USB PD Trigger module + 4.5mm DC P
 <img width="1834" height="500" alt="Illustration1" src="https://github.com/user-attachments/assets/d7da5f15-54ed-41e1-8b8b-be78dc088ceb" />
 
 
-Well, not quite, because Dell laptop power supplies implement an ID chip on its output stage for authenticity checking, output voltage check & output power check. If you just plug in a random 20V supply into the laptop it would know that it's not an authentic dell laptop supply and it would severely limit the amount of current that it would draw from it (800mA in my experience) which results in an underpowered & underclocked laptop leading to poor performance. This is our challenge #2, how to bypass the dell proprietary handshaker between supply and laptop. 
+Well, not quite, because Dell laptop power supplies implement an ID chip on its output stage for authenticity checking, output voltage check & output power check. If you just plug in a random 20V supply into the laptop it would know that it's not an authentic dell laptop supply and it would severely limit the amount of current that it would draw from it (800mA in my experience) which results in an underpowered & underclocked laptop leading to poor performance. This is our challenge #2, how to bypass the dell proprietary handshake between supply and laptop. 
 
-<img width="628" height="447" alt="image" src="https://github.com/user-attachments/assets/6b1a4680-bfd3-49b4-a303-d4e577e0b8b3" />
+<img width="400" height="400" alt="image" src="https://github.com/user-attachments/assets/6b1a4680-bfd3-49b4-a303-d4e577e0b8b3" />
+
+Notice from the schematic, Dell uses a DS2501 EEPROM IC for its ID chip, which is a 512bit 1-Wire prtocol EEPROM chip. This is where the serial number and power supply details are stored which is then read by the laptop when the power supply is first plugged. So in theory, if we read the data inside the DS2501 EEPROM, program it into our own ID chip and wire its output into the ID pin of our 4.5mm DC power jack, we should be able to bypass the authenticity check. 
+
+So I probed the ID pin of the supply during handshake to see the data being exchanged. Heres what I got. 
+
+<img width="1874" height="600" alt="image" src="https://github.com/user-attachments/assets/eec96f0a-98f2-4da0-b544-0b802d40cf00" />
+
+I wont go into details regarding the 1-Wire communication protocol, but what the logic analyzer data basically says is that. 
+
