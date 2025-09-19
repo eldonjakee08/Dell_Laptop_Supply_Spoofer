@@ -13,7 +13,7 @@ So due to my laptops relatively old age (5 years is considered old in tech years
 
 <img width="250" height="250" alt="Screenshot2 2025-09-19 144130" src="https://github.com/user-attachments/assets/3652847a-56c4-43c3-a758-f07d894d5d77" />
 
-These boards are designed to trigger a USB Power Delivery (USB PD) capable power bank to output a specific voltage level (i.e 5V, 9V, 12V, 15V & 20V) we can then solder on its output pins a 4.5mm DC Jack cable which we plug into our laptop. In our case, we need a power source capable of delivering 20V at 3.25A (65W) which is well within the limits of a USB PD capable 65W Type-C power bank. 
+These boards are designed to trigger a USB Power Delivery (USB PD) capable power bank to output a specific voltage level (i.e 5V, 9V, 12V, 15V & 20V) we can then solder on its output pins a 4.5mm DC Jack cable which we can plug into the laptop. As for the power source, we need a 20V source thats capable of outputing 3.25A (65W) which is well within the limits of a USB PD capable 65W Type-C power bank. 
 
 So by using a 65W USB PD capable power bank + USB PD Trigger module + 4.5mm DC Power jack cable and plugging it into the laptop would make this work right???
 
@@ -24,7 +24,11 @@ Well, not quite, because Dell laptop power supplies implement an ID chip on its 
 
 <img width="400" height="400" alt="image" src="https://github.com/user-attachments/assets/6b1a4680-bfd3-49b4-a303-d4e577e0b8b3" />
 
-Notice from the schematic, Dell uses a DS2501 EEPROM IC for its ID chip, which is a 512bit 1-Wire prtocol EEPROM chip. This is where the serial number and power supply details are stored which is then read by the laptop when the power supply is first plugged. So in theory, if we read the data inside the DS2501 EEPROM, program it into our own ID chip and wire its output into the ID pin of our 4.5mm DC power jack, we should be able to bypass the authenticity check. 
+Notice from the schematic, Dell uses a DS2501 EEPROM IC for its ID chip, which is a 512bit 1-Wire protocol EEPROM chip. This is where the serial number and power supply details are stored, which is then read by the laptop when the power supply is first plugged. So in theory, if we read the data inside the DS2501 EEPROM, program it into our own ID chip and wire the data pin into the ID pin of our 4.5mm DC power jack, we should be able to bypass the authenticity check. 
+
+So now, the whole system should look like this: 
+
+<img width="2459" height="492" alt="Illustration2" src="https://github.com/user-attachments/assets/9c9b66fa-e823-4a8a-97ff-b42679d37232" />
 
 # Probing the ID Chip
 So I probed the ID pin of the supply with a logic analyzer to see the data being exchanged during handshake. Heres what I got. 
@@ -41,7 +45,7 @@ PRESENCE PULSE: The DS2501 responds with a presence pulse to let the laptop know
 
 SKIP ROM COMMAND: This is a 1-Wire protocol command that basically tells the DS2501 IC to skip the slave identification process.
 
-READ MEMORY COMMAND: This command (0xF0) is used to read data inside the DS2501 EPROM data field. 
+READ MEMORY COMMAND: This command (0xF0) is used to read data inside the DS2501 EEPROM data field. 
 
 <img width="1146" height="188" alt="image" src="https://github.com/user-attachments/assets/4bb8fa90-2dec-45ec-9b41-25ef0152c481" />
 
@@ -80,8 +84,50 @@ AC: AC supply
 
 Now we have the values to program into our ID chip! 
 
-# Programming our ID Chip
+# Programming the ID Chip
 
+The dell laptop supplies use a DS2501 ID Chip, I have a few problems on using this chip:
 
+1. Its a one time programmable chip.
+2. You need a 12V pulse applied to one of the pins to program the EEPROM. Which we would need a separate circuit for precise 12V pulse generation.
+3. Lastly, IT'S OBSOLETE! 😭
 
+So instead, I opted for a newer chip in the same family, the DS2431 1024bit 1-Wire EEPROM IC. This I think is an improvement over the now obsolete DS2501 for the following reasons:
+
+1. You could program the EEPROM multiple times.
+2. You do not need a 12V pulse to program the chip.
+3. Same EEPROM addresses and memory structure as DS2501.
+4. Same ROM commands as DS2501
+5. Larger memory.
+6. Lastly, ITS NOT OBSOLETE! 👌
+
+I've developed a driver for programming and reading into the EEPROM of these chips. You can download and refer to the Repo link given below on how to use the driver.
+
+Repo Link: https://github.com/eldonjakee08/DS2431_1WIRE_EEPROM_DRIVER
+
+<img width="571" height="316" alt="image" src="https://github.com/user-attachments/assets/a17aa85a-c4ab-4d42-9d8f-86aa5feede38" />
+
+I made a short STM32 program to write into the EEPROM. Let me explain how it works. 
+1. declare and intialize uint8_t pdata[] array, this will hold the first 8 bytes of data to be written into EEPROM memory location 0x0000 to 0x0007
+2. call OneWire_WriteMemory() function (from the driver) to write the contents of pdata array into DS2431s EEPROM
+3. declare and intialize another uint8_t pdata2[] array, this will hold the 2nd batch of 8 byte data to be written into memory location 0x0008 to 0x000F
+4. call OneWire_WriteMemory() function again to write the contents of pdata2 array into DS2431s EEPROM
+
+If you notice, in pdata[] array, theres this "0x27" byte. This data is actually the 8bit CRC generated by the DS2501 after master issues the SKIP ROM, READ MEMORY & MEMORY LOCATION commands. The problem with DS2431 is that, it does not generate an 8Bit CRC after master issues the previously mentioned commands. The laptop expects to get the 0x27 CRC from slave, so to solve this, we hard coded the 0x27 8bit CRC into the memory location 0x0006 of DS2431 EEPROM. This particular memory location is important as this is where the laptop starts to read from the ID chip's EEPROM. So by the time the laptop expects an 8Bit CRC from the slave, what the DS2431 essentially does is sending the hard coded 0x27 CRC data inside the memory location 0x0006, thereby replicating the DS2501 behavior. 👌
+
+After programming the chip we should get a message in the Serial Wire Viewer. (Shown below)
+
+<img width="465" height="890" alt="Screenshot 2025-07-26 013716" src="https://github.com/user-attachments/assets/65a82975-156f-4c5b-8d1f-67bd8ddf90db" />
+
+Now that we have the programmed chip, we can now proceed in assembling everything together. 
+
+# Assembling the Hardware
+
+The hardware for this project is pretty simple. See schematic below. 
+
+<img width="884" height="369" alt="image" src="https://github.com/user-attachments/assets/04f0b716-b396-4e2d-ac99-6bf7bdb13a54" />
+
+The output of the PD trigger is directly connected to the power terminal of the 4.5mm DC jack cable. The data line of the DS2431 is directly connected to the ID terminal of the cable. 
+
+If you notice, the DS2431 does not have any power rails, this is because the IC can operate in "parasitic power mode" this essentially means that it draws its power from the data lines during the read/write process. 
 
