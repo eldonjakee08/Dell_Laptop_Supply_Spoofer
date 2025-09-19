@@ -3,7 +3,7 @@ So I have this old Dell Inspiron 3593 (2020 model) laptop and it's of showing it
 
 <img width="314" height="206" alt="image" src="https://github.com/user-attachments/assets/b2f79963-7d76-43f4-9f68-118938b4574d" />
 
-I know! I know! I should replace the battery 😅, but I kind of thought "hey why not power the laptop with an external powerbank?" in that way I'm not limited to the laptops internal battery and I could use my laptop anywhere for many hours without having to worry about a power source. 
+I know! I know! I should replace the battery 😅, but I kind of thought "hey why not power the laptop with an external powerbank?" in that way I'm not limited to the laptops internal battery. I could use my laptop anywhere for many hours without having to worry about a power source. 
 
 I'm an outdoor person and sometimes I get claustrophobic inside coding all day, I would like to sometimes code outdoors, like by the beach, by the park or even in cafes. But with the current state of my laptops battery, I am not able to do those things and that's the main motivation behind this little project. 
 
