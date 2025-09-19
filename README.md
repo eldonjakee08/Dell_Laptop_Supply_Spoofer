@@ -1,9 +1,9 @@
 # Dell Laptop Supply Spoofer
-So I have this old Dell Inspiron 3593 (2020 model) laptop and it kind of showing its age, with the battery being slightly bloated and relatively high wear level of 40%. 😅
+So I have this old Dell Inspiron 3593 (2020 model) laptop and it's of showing its age, with the battery being slightly bloated and relatively high wear level of 40%. 😅
 
 <img width="314" height="206" alt="image" src="https://github.com/user-attachments/assets/b2f79963-7d76-43f4-9f68-118938b4574d" />
 
-I know! I know! I should replace the battery 😅, but I kind of thought "hey why not power the laptop with an external powerbank?" in that way I'm not limited to the laptop's internal battery and I could use my laptop anywhere for many hours without having to worry about a power source. 
+I know! I know! I should replace the battery 😅, but I kind of thought "hey why not power the laptop with an external powerbank?" in that way I'm not limited to the laptops internal battery and I could use my laptop anywhere for many hours without having to worry about a power source. 
 
 I'm an outdoor person and sometimes I get claustrophobic inside coding all day, I would like to sometimes code outdoors, like by the beach, by the park or even in cafes. But with the current state of my laptops battery, I am not able to do those things and that's the main motivation behind this little project. 
 
@@ -117,7 +117,7 @@ If you notice, in pdata[] array, theres this "0x27" byte. This data is actually 
 
 The problem with DS2431 is that, it does not generate an 8Bit CRC after master issues the previously mentioned commands. The laptop expects to get the 0x27 CRC from slave, so to solve this, we hard coded the 0x27 8bit CRC into the memory location 0x0006 of DS2431 EEPROM. 
 
-This particular memory location is important as this is where the laptop starts to read from the ID chip's EEPROM. So by the time the laptop expects an 8Bit CRC from the slave, what the DS2431 essentially does is sending the hard coded 0x27 CRC data inside the memory location 0x0006, thereby replicating the DS2501 behavior. 👌
+This particular memory location is important as this is where the laptop starts to read from the ID chips EEPROM. So by the time the laptop expects an 8Bit CRC from the slave, what the DS2431 essentially does is sending the hard coded 0x27 CRC data inside the memory location 0x0006, thereby replicating the DS2501 behavior. 👌
 
 After programming the chip we should get a message in the Serial Wire Viewer. (Shown below)
 
