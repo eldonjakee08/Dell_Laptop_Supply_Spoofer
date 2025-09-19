@@ -35,23 +35,22 @@ So I probed the ID pin of the supply with a logic analyzer to see the data being
 
 <img width="1874" height="600" alt="image" src="https://github.com/user-attachments/assets/eec96f0a-98f2-4da0-b544-0b802d40cf00" />
 
-<img width="716" height="195" alt="image" src="https://github.com/user-attachments/assets/2dd3934f-3971-4673-8f36-9a5d6a463da2" />
+<br><img width="716" height="195" alt="image" src="https://github.com/user-attachments/assets/2dd3934f-3971-4673-8f36-9a5d6a463da2" />
 
 RESET CONDITION: The laptop issues a ~500us pulse to check if a 1-Wire slave (DS2501) is present.
 
-PRESENCE PULSE: The DS2501 responds with a presence pulse to let the laptop know its "presence" 
-
-<img width="1141" height="184" alt="image" src="https://github.com/user-attachments/assets/53fd952c-dc4f-475e-8de7-f217ba14a6db" />
+PRESENCE PULSE: The DS2501 responds with a presence pulse to let the laptop know its "presence"      
+<br><img width="1141" height="184" alt="image" src="https://github.com/user-attachments/assets/53fd952c-dc4f-475e-8de7-f217ba14a6db" />
 
 SKIP ROM COMMAND: This is a 1-Wire protocol command that basically tells the DS2501 IC to skip the slave identification process.
 
 READ MEMORY COMMAND: This command (0xF0) is used to read data inside the DS2501 EEPROM data field. 
 
-<img width="1146" height="188" alt="image" src="https://github.com/user-attachments/assets/4bb8fa90-2dec-45ec-9b41-25ef0152c481" />
+<br><img width="1146" height="188" alt="image" src="https://github.com/user-attachments/assets/4bb8fa90-2dec-45ec-9b41-25ef0152c481" />
 
 The bus master (the laptop) follows the read memory command byte with a 2-byte address TA1:(T7:T0) = 0x06 (lower nibble address), TA2:(T15:T8) = 0x00 (higher nibble address) that indicates a starting address location within the EEPROM data field.
 
-**DATA SECTION**
+<br>**DATA SECTION**
 <img width="1205" height="216" alt="image" src="https://github.com/user-attachments/assets/cc52cef8-a8d9-49a1-a25f-40379ddc11e3" />
 
 DATA 0x27: This is an 8-bit CRC of the command byte and address bytes which is computed by the DS2501.
@@ -136,14 +135,14 @@ The output of the PD trigger is directly connected to the power lines of the 4.5
 
 If you notice, the DS2431 does not have any power rails, this is because the IC can operate in "parasitic power mode" this essentially means that it draws its power from the data lines during the read/write process. 
 
-**END PRODUCT**
+<br>**END PRODUCT**
 
 <img width="550" height="550" alt="image" src="https://github.com/user-attachments/assets/f11efeaf-0275-48ba-9d0a-c0103ba2d1e3" />
 
 <img width="550" height="550" alt="image" src="https://github.com/user-attachments/assets/b29ef2d5-ccbe-4c6f-b3ce-696ca427efab" />
 
-**TESTING**
+<br>**TESTING**
 
-Heres a youtube video with me testing the Supply Spoofer. 
+Heres a youtube video of me testing the Supply Spoofer. 
 
 [![Youtube](https://img.youtube.com/vi/CXdM-Me_jxc/maxresdefault.jpg)](https://www.youtube.com/watch?v=CXdM-Me_jxc)
