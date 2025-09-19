@@ -51,7 +51,7 @@ READ MEMORY COMMAND: This command (0xF0) is used to read data inside the DS2501 
 
 The bus master (the laptop) follows the read memory command byte with a 2-byte address TA1:(T7:T0) = 0x06 (lower nibble address), TA2:(T15:T8) = 0x00 (higher nibble address) that indicates a starting address location within the EEPROM data field.
 
-*DATA SECTION*
+**DATA SECTION**
 <img width="1205" height="216" alt="image" src="https://github.com/user-attachments/assets/cc52cef8-a8d9-49a1-a25f-40379ddc11e3" />
 
 DATA 0x27: This is an 8-bit CRC of the command byte and address bytes which is computed by the DS2501.
@@ -136,8 +136,12 @@ The output of the PD trigger is directly connected to the power lines of the 4.5
 
 If you notice, the DS2431 does not have any power rails, this is because the IC can operate in "parasitic power mode" this essentially means that it draws its power from the data lines during the read/write process. 
 
-*END PRODUCT*
+**END PRODUCT**
 
-![IMG_20250824_214803](https://github.com/user-attachments/assets/9248adf7-4636-4a49-b500-975e8ad2789a) 
-![IMG_20250824_214832](https://github.com/user-attachments/assets/5eb519a7-b46e-4aff-a709-704279c2968f)
+<img width="550" height="550" alt="image" src="https://github.com/user-attachments/assets/f11efeaf-0275-48ba-9d0a-c0103ba2d1e3" />
 
+<img width="550" height="550" alt="image" src="https://github.com/user-attachments/assets/b29ef2d5-ccbe-4c6f-b3ce-696ca427efab" />
+
+**TESTING**
+
+[![Youtube](https://img.youtube.com/vi/CXdM-Me_jxc/maxresdefault.jpg)](https://www.youtube.com/watch?v=CXdM-Me_jxc)
