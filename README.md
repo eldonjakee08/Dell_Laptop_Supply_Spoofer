@@ -123,7 +123,7 @@ After programming the chip we should get a message in the Serial Wire Viewer. (S
 <img width="465" height="890" alt="Screenshot 2025-07-26 013716" src="https://github.com/user-attachments/assets/65a82975-156f-4c5b-8d1f-67bd8ddf90db" />
 
 
-Now that we have the programmed chip, we can now proceed in assembling everything together. 
+Now that we have programmed the chip, we can now proceed in assembling the hardware. 
 
 # Assembling the Hardware
 
