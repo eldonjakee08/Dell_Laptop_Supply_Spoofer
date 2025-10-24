@@ -1,4 +1,5 @@
 # Dell Laptop Supply Spoofer
+yowyow
 
 So I have this old Dell Inspiron 3593 (2020 model) laptop and it's showing its age, with the battery being slightly bloated and high wear level of 40%. 😅
 
